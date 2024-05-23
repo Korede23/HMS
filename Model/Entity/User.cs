@@ -1,4 +1,6 @@
-﻿using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
+﻿
+
+using HMS.Model.Entity.Enum;
 
 namespace HMS.Model.Entity
 {
