@@ -14,13 +14,13 @@ namespace HMS.Controllers
 
         public RoomController(IRoomService roomService)
         {
-            _roomService = roomService;  
+            _roomService = roomService;
         }
         [HttpPost("create-room")]
         public async Task<IActionResult> CreateRoom(CreateRoom request)
         {
-           var room = await _roomService.CreateRoom(request);
-            if (room.Success ==true)
+            var room = await _roomService.CreateRoom(request);
+            if (room.Success == true)
             {
                 return Ok(room);
             }
@@ -35,8 +35,8 @@ namespace HMS.Controllers
         public async Task<IActionResult> EditRoom([FromBody] UpdateRoom request)
         {
 
-          var room = await  _roomService.UpdateRoom(request.Id, request);
-            if (room.Success ==true)
+            var room = await _roomService.UpdateRoom(request.Id, request);
+            if (room.Success == true)
             {
                 return Ok(room);
             }
@@ -47,7 +47,7 @@ namespace HMS.Controllers
         }
 
         [HttpDelete("delete-room")]
-        public async Task<IActionResult> DeleteRoomAsync([FromRoute]int id)
+        public async Task<IActionResult> DeleteRoomAsync([FromRoute] int id)
         {
             var room = await _roomService.DeleteRoomAsync(id);
             if (room.Success == true)
@@ -55,12 +55,12 @@ namespace HMS.Controllers
                 return Ok(room);
             }
             return BadRequest(room.Success == false);
-            
+
         }
         [HttpGet("get-all-rooms-created")]
         public async Task<IActionResult> GetAllRoomsCreatedAsync()
         {
-            var rooms = await  _roomService.GetAllRoomsCreatedAsync();
+            var rooms = await _roomService.GetAllRoomsCreatedAsync();
             if (rooms.Success == true)
             {
                 return Ok(rooms);
@@ -69,14 +69,14 @@ namespace HMS.Controllers
             {
                 return BadRequest(rooms.Success == false);
             }
-           
-           
+
+
         }
 
         [HttpGet("get-room-by-id/{id}")]
         public async Task<IActionResult> GetRoomsByIdAsync(int id)
         {
-            
+
             var rooms = await _roomService.GetRoomsByIdAsync(id);
             if (rooms.Success == true)
             {
@@ -84,7 +84,7 @@ namespace HMS.Controllers
             }
             else
             {
-                return BadRequest(rooms.Success == false);    
+                return BadRequest(rooms.Success == false);
             }
 
         }

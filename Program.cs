@@ -20,6 +20,8 @@ builder.Services.AddTransient<IBookingServices, BookingService>();
 builder.Services.AddTransient<IUserServices, UserService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<ICustomerServices , CustomerServices>();
+builder.Services.AddTransient<IOrderServices , OrderServices>();
+
 var app = builder.Build();
 
 
