@@ -1,6 +1,7 @@
-﻿using HMS.Model.Entity;
+﻿using HMS.Dto.ResponseModel;
+using HMS.Model.Entity;
 
-namespace HMS.Dto.ResponseModel
+namespace HMS.Dto.RequestModel
 {
     public class OrderDto
     {
