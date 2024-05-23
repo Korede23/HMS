@@ -37,7 +37,7 @@ namespace HMS.Implementation.Services
                     return new BaseResponse
                     {
                         Success = true,
-                        Message = $"Order By {request.CustomerName} has been Created Succesfully"
+                        Message = "Order  has been Placed Succesfully"
                     };
                 }
                 else
@@ -91,7 +91,7 @@ namespace HMS.Implementation.Services
 
         }
 
-        public async Task<OrderResponseDto> GetOrderById(int Id)
+        public async Task<OrderResponseDto> GetOrderByIdAsync(int Id)
         {
             var order = await _dbContext.Orders
             .Where(x => x.Id == Id)

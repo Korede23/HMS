@@ -1,12 +1,14 @@
 ﻿using HMS.Dto.RequestModel;
 using HMS.Implementation.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+
+    public class OrderController : Controller
     {
         private readonly IOrderServices _orderServices;
 
@@ -16,9 +18,8 @@ namespace HMS.Controllers
         }
 
 
-
         [HttpPost("create-order")]
-        public async Task<IActionResult> CreateRoom(CreateOrder request)
+        public async Task<IActionResult> CreateOrder(CreateOrder request)
         {
             var order = await _orderServices.CreateOrder(request);
             if (order.Success == true)
@@ -61,7 +62,7 @@ namespace HMS.Controllers
         [HttpGet("get-all-order-created")]
         public async Task<IActionResult> GetAllOrderAsync()
         {
-            var order   = await _orderServices.GetAllOrderAsync();
+            var order = await _orderServices.GetAllOrderAsync();
             if (order.Success == true)
             {
                 return Ok(order);
@@ -93,3 +94,5 @@ namespace HMS.Controllers
 
     }
 }
+
+
