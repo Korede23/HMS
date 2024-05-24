@@ -1,4 +1,5 @@
-﻿using HMS.Dto.RequestModel;
+﻿using HMS.Dto;
+using HMS.Dto.RequestModel;
 using HMS.Dto.ResponseModel;
 using HMS.Implementation.Interface;
 using HMS.Model.Entity;

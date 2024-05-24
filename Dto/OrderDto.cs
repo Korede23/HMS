@@ -1,7 +1,7 @@
 ﻿using HMS.Dto.ResponseModel;
 using HMS.Model.Entity;
 
-namespace HMS.Dto.RequestModel
+namespace HMS.Dto
 {
     public class OrderDto
     {

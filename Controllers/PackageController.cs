@@ -1,8 +1,5 @@
 ﻿using HMS.Dto.RequestModel;
 using HMS.Implementation.Interface;
-using HMS.Implementation.Services;
-using HMS.Model.Entity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.Controllers

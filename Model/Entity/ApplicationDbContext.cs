@@ -11,5 +11,6 @@ namespace HMS.Model.Entity
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Package> Packages { get; set; }
+        public DbSet<CustomerReview> CustomerReviews  { get; set; }
     }
 }

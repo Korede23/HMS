@@ -108,6 +108,29 @@ namespace HMS.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("HMS.Model.Entity.CustomerReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CustomerReviews");
+                });
+
             modelBuilder.Entity("HMS.Model.Entity.Order", b =>
                 {
                     b.Property<int>("Id")
