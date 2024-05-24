@@ -1,6 +1,7 @@
 ﻿using HMS.Dto.RequestModel;
 using HMS.Implementation.Interface;
 using HMS.Implementation.Services;
+using HMS.Model.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +29,7 @@ namespace HMS.Controllers
             else
             {
                 return BadRequest(item.Success == false);
+
             }
 
         }
@@ -44,6 +46,7 @@ namespace HMS.Controllers
             else
             {
                 return BadRequest(item.Success == false);
+
             }
         }
 
@@ -56,7 +59,6 @@ namespace HMS.Controllers
                 return Ok(item);
             }
             return BadRequest(item.Success == false);
-
         }
         [HttpGet("get-all-package-created")]
         public async Task<IActionResult> GetAllPackageAsync()
@@ -79,7 +81,7 @@ namespace HMS.Controllers
         {
 
             var item = await _packageServices.GetAllPackagesByIdAsync(id);
-            if (item            .Success == true)
+            if (item.Success == true)
             {
                 return Ok(item);
             }
