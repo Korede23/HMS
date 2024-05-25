@@ -1,5 +1,6 @@
-﻿using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
+﻿
 using HMS.Dto.ResponseModel;
+using HMS.Model.Entity.Enum;
 
 namespace HMS.Dto
 {

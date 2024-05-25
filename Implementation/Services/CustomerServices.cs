@@ -23,7 +23,7 @@ namespace HMS.Implementation.Services
                 if (request != null)
                 {
                     var existingCustomer = _dbContext.Customers.FirstOrDefault(x =>
-                    x.Id == request.Id &&
+                   // x.Id == request.Id &&
                     x.UserName == request.UserName &&
                     x.Email == request.Email);
 
@@ -39,7 +39,7 @@ namespace HMS.Implementation.Services
 
                     var customer = new Customer
                     {
-                        Id = request.Id,
+                      //  Id = request.Id,
                         UserName = request.UserName,
                         Email = request.Email,
                         Address = request.Address,
@@ -74,7 +74,9 @@ namespace HMS.Implementation.Services
                 return new BaseResponse
                 {
                     Success = false,
-                    Message = $"Registration Failed, Unable to register {request.UserName}"
+                    Message = $"Registration Failed, Unable to register {request.UserName}",
+                    Hasherror = true
+
                 };
             }
         }
@@ -213,6 +215,8 @@ namespace HMS.Implementation.Services
                 };
             }
         }
+
+        
     }
     
 }

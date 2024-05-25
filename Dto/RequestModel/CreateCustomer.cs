@@ -4,7 +4,7 @@ namespace HMS.Dto.RequestModel
 {
     public class CreateCustomer
     {
-        public int Id { get; set; }
+       // public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
