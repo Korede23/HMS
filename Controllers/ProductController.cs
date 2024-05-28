@@ -6,43 +6,43 @@ namespace HMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PackageController : ControllerBase
+    public class ProductController : ControllerBase
     {
-        private readonly IPackageServices _packageServices;
+        private readonly IProductServices _packageServices;
 
-        public PackageController(IPackageServices packageServices)
+        public ProductController(IProductServices packageServices)
         {
             _packageServices = packageServices;
         }
 
         [HttpPost("create-package")]
-        public async Task<IActionResult> CreatePackage(CreatePackage request)
+        public async Task<IActionResult> CreatePackage(CreateProduct request)
         {
-            var item = await _packageServices.CreatePackage(request);
-            if (item.Success == true)
+            var item = await _packageServices.CreateProduct(request);
+            if (item.Success == false)
             {
                 return Ok(item);
             }
             else
             {
-                return BadRequest(item.Success == false);
+                return BadRequest(item);
 
             }
 
         }
 
         [HttpPost("edit-package")]
-        public async Task<IActionResult> EditPackage([FromBody] UpdatePackage request)
+        public async Task<IActionResult> EditPackage([FromBody] UpdateProduct request)
         {
 
-            var item = await _packageServices.UpdatePackage(request.Id, request);
-            if (item.Success == true)
+            var item = await _packageServices.UpdateProduct(request.Id, request);
+            if (item.Success == false)
             {
                 return Ok(item);
             }
             else
             {
-                return BadRequest(item.Success == false);
+                return BadRequest(item);
 
             }
         }
@@ -50,24 +50,24 @@ namespace HMS.Controllers
         [HttpDelete("delete-package")]
         public async Task<IActionResult> DeletePackageAsync([FromRoute] int id)
         {
-            var item = await _packageServices.DeletePackageAsync(id);
-            if (item.Success == true)
+            var item = await _packageServices.DeleteProductAsync(id);
+            if (item.Success == false)
             {
                 return Ok(item);
             }
-            return BadRequest(item.Success == false);
+            return BadRequest(item);
         }
         [HttpGet("get-all-package-created")]
         public async Task<IActionResult> GetAllPackageAsync()
         {
-            var item = await _packageServices.GetAllPackagesAsync();
-            if (item.Success == true)
+            var item = await _packageServices.GetAllProductAsync();
+            if (item.Success == false)
             {
                 return Ok(item);
             }
             else
             {
-                return BadRequest(item.Success == false);
+                return BadRequest(item);
             }
 
 
@@ -77,14 +77,14 @@ namespace HMS.Controllers
         public async Task<IActionResult> GetOrderByIdAsync(int id)
         {
 
-            var item = await _packageServices.GetAllPackagesByIdAsync(id);
-            if (item.Success == true)
+            var item = await _packageServices.GetAllProductsByIdAsync(id);
+            if (item.Success == false)
             {
                 return Ok(item);
             }
             else
             {
-                return BadRequest(item.Success == false);
+                return BadRequest(item);
             }
 
         }

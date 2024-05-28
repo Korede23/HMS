@@ -25,8 +25,8 @@ namespace HMS.Implementation.Services
                     var order = new Order
                     {
                         CustomerId = request.CustomerId,
-                        CustomerName = request.CustomerName,
                         OrderDate = request.OrderDate,
+                         Product = request.Product,
                         TotalAmount = request.TotalAmount,
 
                     };
@@ -98,9 +98,9 @@ namespace HMS.Implementation.Services
             .Where(x => x.Id == Id)
             .Select(x => new OrderDto
             {
-                CustomerName = x.CustomerName,
                 CustomerId = x.CustomerId,
                 OrderDate = x.OrderDate,
+                Product = x.Product,
                 TotalAmount = x.TotalAmount
             }).ToListAsync();
 
@@ -132,9 +132,10 @@ namespace HMS.Implementation.Services
             var order = await _dbContext.Orders
            .Select(x => new OrderDto
            {
-               CustomerName = x.CustomerName,
+              
                CustomerId = x.CustomerId,
                OrderDate = x.OrderDate,
+               Product = x.Product,
                TotalAmount = x.TotalAmount
            }).ToListAsync();
 
@@ -167,8 +168,8 @@ namespace HMS.Implementation.Services
             {
                 order.CustomerId = request.CustomerId;
                 order.OrderDate = request.OrderDate;
+                order.Product = request.Product;
                 order.TotalAmount = request.TotalAmount;
-                order.CustomerName = request.CustomerName;
             }
             _dbContext.Orders.Add(order);
             if (await _dbContext.SaveChangesAsync() > 0)

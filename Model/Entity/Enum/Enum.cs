@@ -50,6 +50,15 @@
         Male =1,
         Female 
     }
+
+    public enum Review
+    {
+        Excellent = 1,
+        Good ,
+        Bad ,
+        Worst 
+
+    }
 }
 
 

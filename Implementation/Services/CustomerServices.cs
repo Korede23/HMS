@@ -120,14 +120,14 @@ namespace HMS.Implementation.Services
                     Age = x.Age,
                     Email = x.Email,
                     Gender = x.Gender,
-                    Id = x.Id,
                     Name = x.Name,
                     Password = x.Password,
                     PhoneNumber = x.PhoneNumber,
                     UserName = x.UserName,
                 }).ToListAsync();
-            if (customer != null)
+            if (customer.Any())
             {
+                var customers = customer.First();
                 return new CustomerResponseDto
                 {
                     Success = true,
@@ -156,7 +156,6 @@ namespace HMS.Implementation.Services
                    Age = x.Age,
                    Email = x.Email,
                    Gender = x.Gender,
-                   Id = x.Id,
                    Name = x.Name,
                    Password = x.Password,
                    PhoneNumber = x.PhoneNumber,
@@ -177,7 +176,7 @@ namespace HMS.Implementation.Services
                 {
                     Success = false,
                     Message = $"Failed to retrieve customer there was an error in the retrieval process.",
-                    Hasherror = true
+                   // Hasherror = true
                 };
             }
         }

@@ -10,21 +10,59 @@ namespace HMS.Implementation.Services
     public class BookingService : IBookingServices
     {
         private readonly ApplicationDbContext _dbContext;
-        public BookingService(ApplicationDbContext dbContext)
+        private readonly ICustomerServices _customerServices;
+        private readonly IRoomService _roomService;
+
+        public BookingService(ApplicationDbContext dbContext , ICustomerServices customerServices , IRoomService roomService)
         {
             _dbContext = dbContext;
+            _customerServices = customerServices;
+            _roomService = roomService;
         }
 
 
-        public async Task<BaseResponse> CreateBooking(CreateBooking request)
+        public async Task<BaseResponse> CreateBooking(CreateBooking request , int Id)
         {
             if (request != null)
             {
 
+                // Check if the customer is registered
+                
+                    var customer = await _customerServices.GetCustomerByIdAsync(Id);
+                    if (customer.Data == null)
+                    {
+                        return new BaseResponse
+                        {
+                            Success = false,
+                            Message = "Booking Failed. Customer is not registered.",
+                            //Hasherror = true
+                        };
+                    }
+
+                   
+                
+
+
+
+                foreach (var room in request.Rooms)
+                {
+                    var roomDetails = await _roomService.GetRoomsByIdAsync(room.RoomId);
+                    if (roomDetails == null)
+                    {
+                        return new BaseResponse
+                        {
+                            Success = false,
+                            Message = "Booking Failed. The room is not available.",
+                            Hasherror = true
+                        };
+                    }
+                }
+
+
+
                 var existingBooking = _dbContext.Bookings.FirstOrDefault(x =>
-                   x.CheckIn == request.CheckIn &&
-                   x.Checkout == request.Checkout &&
-                   x.Duration == request.Duration &&
+                   //x.CheckIn == request.CheckIn &&
+                   //x.Checkout == request.Checkout &&
                    x.Status == request.Status);
 
                 if (existingBooking != null)
@@ -41,21 +79,24 @@ namespace HMS.Implementation.Services
 
                 var booking = new Booking()
                 {
-                    CheckIn = request.CheckIn,
-                    Duration = request.Duration,
-                    Checkout = request.Checkout,
+                    //CheckIn = request.CheckIn,
+                   // Checkout = request.Checkout,
                     Status = request.Status,
                     TotalCost = request.TotalCost,
+                    
                 };
                 _dbContext.Bookings.Add(booking);
-            
+
+              
+
+
 
                 if (await _dbContext.SaveChangesAsync() > 0)
                 {
                     return new BaseResponse
                     {
                         Success = true,
-                        Message = $"Your booking  has been successful"
+                        Message = "Your booking  has been successful"
                     };
                 }
                 else
@@ -114,7 +155,7 @@ namespace HMS.Implementation.Services
             .Where(x => x.Id == Id)
             .Select(x => new BookingDto()
             {
-                Duration = x.Duration,
+               
                 CheckIn = x.CheckIn,
                 Checkout = x.Checkout,
                 Status = x.Status,
@@ -147,7 +188,7 @@ namespace HMS.Implementation.Services
             var booking = await _dbContext.Bookings
             .Select(x => new BookingDto()
             {
-                Duration = x.Duration,
+               
                 CheckIn = x.CheckIn,
                 Checkout = x.Checkout,
                 Status = x.Status,
@@ -180,10 +221,8 @@ namespace HMS.Implementation.Services
             var booking = _dbContext.Bookings.FirstOrDefault(x => x.Id == Id);
             if (booking != null)
             {
-                booking.Duration = request.Duration;
                 booking.CheckIn = request.CheckIn;
                 booking.Checkout = request.Checkout;
-                booking.RoomId = request.RoomId;
                 booking.Status = request.Status;
                 booking.TotalCost = request.TotalCost;
             }

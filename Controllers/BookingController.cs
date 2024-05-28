@@ -16,16 +16,16 @@ namespace HMS.Controllers
             _bookService = bookService;
         }
         [HttpPost("create-booking")]
-        public async Task<IActionResult> CreateBooking(CreateBooking request)
+        public async Task<IActionResult> CreateBooking(CreateBooking request, int Id)
         {
-          var booking = await  _bookService.CreateBooking(request);
-            if (booking.Success == true)
+          var booking = await  _bookService.CreateBooking(request , Id);
+            if (booking.Success == false)
             {
                 return Ok(booking);
             }
             else
             {
-                return BadRequest(booking.Success == false);
+                return BadRequest(booking);
             }
         }
 
@@ -40,7 +40,7 @@ namespace HMS.Controllers
             }
             else
             {
-                return BadRequest(booking.Success == false);
+                return BadRequest(booking);
             }
         }
 
@@ -48,26 +48,26 @@ namespace HMS.Controllers
         public async Task<IActionResult> DeleteBooking([FromRoute] int id)
         {
             var booking = await _bookService.DeleteBooking(id);
-            if (booking.Success == true)
+            if (booking.Success == false)
             {
                 return Ok(booking);
             }
             else
             {
-                return BadRequest(booking.Success == false);
+                return BadRequest(booking);
             }
         }
         [HttpGet("get-all-booking-created")]
         public async Task<IActionResult> GetAllBookingsAsync()
         {
             var bookings = await _bookService.GetAllBookingsAsync();
-            if (bookings.Success == true)
+            if (bookings.Success == false)
             {
                 return Ok(bookings);
             }
             else
             {
-                return BadRequest(bookings.Success == false);
+                return BadRequest(bookings);
             }
 
 
@@ -77,13 +77,13 @@ namespace HMS.Controllers
         public async Task<IActionResult> GetBookingByIdAsync(int id)
         {
             var bookings = await _bookService.GetBookingByIdAsync(id);
-            if (bookings.Success == true)
+            if (bookings.Success == false)
             {
                 return Ok(bookings);
             }
             else
             {
-                return BadRequest(bookings.Success == false);
+                return BadRequest(bookings);
             }
         }
 

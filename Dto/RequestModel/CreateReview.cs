@@ -1,9 +1,10 @@
-﻿using HMS.Model.Entity;
+﻿using HMS.Model.Entity.Enum;
 
 namespace HMS.Dto.RequestModel
 {
     public class CreateReview
     {
-        public string Text { get; set; }
+        public string Comment { get; set; }
+        public Review Rating { get; set; }
     }
 }

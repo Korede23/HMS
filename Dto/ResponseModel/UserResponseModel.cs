@@ -1,6 +1,0 @@
-﻿namespace HMS.Dto.ResponseModel
-{
-   
-   
-    
-}

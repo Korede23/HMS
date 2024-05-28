@@ -15,13 +15,13 @@ namespace HMS.Controllers
         {
 
             var customer = await _customerServices.CreateCustomer(request);
-            if (customer.Success == true)
+            if (customer.Success == false)
             {
                 return Ok(customer);
             }
             else
             {
-                return BadRequest(customer.Success == false);
+                return BadRequest(customer);
             }
 
         }
@@ -30,13 +30,13 @@ namespace HMS.Controllers
         public async Task<IActionResult> EditCustomer([FromBody] UpdateCustomer request)
         {
             var customer = await _customerServices.UpdateCustomer(request.Id, request);
-            if (customer.Success == true)
+            if (customer.Success == false)
             {
                 return Ok(customer);
             }
             else
             {
-                return BadRequest(customer.Success == false);
+                return BadRequest(customer);
             }
 
         }
@@ -46,13 +46,13 @@ namespace HMS.Controllers
         public async Task<IActionResult> DeleteCustomer([FromRoute] int id)
         {
             var customer = await _customerServices.DeleteCustomerAsync(id);
-            if (customer.Success == true)
+            if (customer.Success == false)
             {
                 return Ok(customer);
             }
             else
             {
-                return BadRequest(customer.Success == false);
+                return BadRequest(customer);
             }
 
         }
@@ -62,13 +62,13 @@ namespace HMS.Controllers
         public async Task<IActionResult> GetAllCustomer()
         {
             var customer = await _customerServices.GetAllCustomerCreatedAsync();
-            if (customer.Success == true)
+            if (customer.Success == false)
             {
                 return Ok(customer);
             }
             else
             {
-                return BadRequest(customer.Success == false);
+                return BadRequest(customer);
             }
 
         }
@@ -79,13 +79,13 @@ namespace HMS.Controllers
         public async Task<IActionResult> GetCustomerByIdAsync(int id)
         {
             var customer = await _customerServices.GetCustomerByIdAsync(id);
-            if (customer.Success == true)
+            if (customer.Success == false)
             {
                 return Ok(customer);
             }
             else
             {
-                return BadRequest(customer.Success == false);
+                return BadRequest(customer);
             }
         }
 

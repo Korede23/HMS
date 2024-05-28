@@ -18,10 +18,9 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 builder.Services.AddTransient<IRoomService, RoomService>();
 builder.Services.AddTransient<IBookingServices, BookingService>();
 builder.Services.AddTransient<IUserServices, UserService>();
-builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<ICustomerServices , CustomerServices>();
 builder.Services.AddTransient<IOrderServices , OrderServices>();
-builder.Services.AddTransient<IPackageServices , PackageServices>(); 
+builder.Services.AddTransient<IProductServices , ProductServices>(); 
 builder.Services.AddTransient<ICustomerReviewService , CustomerReviewService>();
 
 var app = builder.Build();

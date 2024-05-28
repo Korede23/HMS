@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240524175845_Initial_Migration")]
-    partial class Initial_Migration
+    [Migration("20240526204830_Intial_Migration")]
+    partial class Intial_Migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,34 @@ namespace HMS.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("HMS.Model.Entity.Amenity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AmenityName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Amenity");
+                });
 
             modelBuilder.Entity("HMS.Model.Entity.Booking", b =>
                 {
@@ -41,12 +69,6 @@ namespace HMS.Migrations
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -119,12 +141,15 @@ namespace HMS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");
@@ -148,10 +173,6 @@ namespace HMS.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -171,7 +192,7 @@ namespace HMS.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("HMS.Model.Entity.Package", b =>
+            modelBuilder.Entity("HMS.Model.Entity.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -198,7 +219,7 @@ namespace HMS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Packages");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("HMS.Model.Entity.Role", b =>
@@ -313,16 +334,28 @@ namespace HMS.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("HMS.Model.Entity.Amenity", b =>
+                {
+                    b.HasOne("HMS.Model.Entity.Room", null)
+                        .WithMany("Amenities")
+                        .HasForeignKey("RoomId");
+                });
+
             modelBuilder.Entity("HMS.Model.Entity.Order", b =>
                 {
-                    b.HasOne("HMS.Model.Entity.Package", null)
+                    b.HasOne("HMS.Model.Entity.Product", null)
                         .WithMany("Orders")
                         .HasForeignKey("PackageId");
                 });
 
-            modelBuilder.Entity("HMS.Model.Entity.Package", b =>
+            modelBuilder.Entity("HMS.Model.Entity.Product", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("HMS.Model.Entity.Room", b =>
+                {
+                    b.Navigation("Amenities");
                 });
 #pragma warning restore 612, 618
         }

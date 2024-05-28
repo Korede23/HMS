@@ -1,7 +1,5 @@
 ﻿using HMS.Dto.RequestModel;
 using HMS.Implementation.Interface;
-using HMS.Implementation.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.Controllers
@@ -20,13 +18,13 @@ namespace HMS.Controllers
         public async Task<IActionResult> CreateRoom(CreateRoom request)
         {
             var room = await _roomService.CreateRoom(request);
-            if (room.Success == true)
+            if (room.Success == false)
             {
                 return Ok(room);
             }
             else
             {
-                return BadRequest(room.Success == false);
+                return BadRequest(room);
             }
 
         }
@@ -36,13 +34,13 @@ namespace HMS.Controllers
         {
 
             var room = await _roomService.UpdateRoom(request.Id, request);
-            if (room.Success == true)
+            if (room.Success == false)
             {
                 return Ok(room);
             }
             else
             {
-                return BadRequest(room.Success == false);
+                return BadRequest(room);
             }
         }
 
@@ -50,24 +48,24 @@ namespace HMS.Controllers
         public async Task<IActionResult> DeleteRoomAsync([FromRoute] int id)
         {
             var room = await _roomService.DeleteRoomAsync(id);
-            if (room.Success == true)
+            if (room.Success == false)
             {
                 return Ok(room);
             }
-            return BadRequest(room.Success == false);
+            return BadRequest(room);
 
         }
         [HttpGet("get-all-rooms-created")]
         public async Task<IActionResult> GetAllRoomsCreatedAsync()
         {
             var rooms = await _roomService.GetAllRoomsCreatedAsync();
-            if (rooms.Success == true)
+            if (rooms.Success == false)
             {
                 return Ok(rooms);
             }
             else
             {
-                return BadRequest(rooms.Success == false);
+                return BadRequest(rooms);
             }
 
 
@@ -78,13 +76,13 @@ namespace HMS.Controllers
         {
 
             var rooms = await _roomService.GetRoomsByIdAsync(id);
-            if (rooms.Success == true)
+            if (rooms.Success == false)
             {
                 return Ok(rooms);
             }
             else
             {
-                return BadRequest(rooms.Success == false);
+                return BadRequest(rooms);
             }
 
         }

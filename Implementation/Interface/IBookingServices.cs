@@ -8,7 +8,7 @@ namespace HMS.Implementation.Interface
 {
     public interface IBookingServices
     {
-        Task<BaseResponse> CreateBooking(CreateBooking request);
+        Task<BaseResponse> CreateBooking(CreateBooking request, int Id);
         Task<BaseResponse> DeleteBooking(int Id);
         Task<BookingResponseDto> GetBookingByIdAsync(int Id);
         Task<BaseResponse> UpdateBooking(int Id, UpdateBooking request);

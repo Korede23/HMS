@@ -28,7 +28,7 @@ namespace HMS.Controllers
             }
             else
             {
-                return BadRequest(order.Success == false);
+                return BadRequest(order);
             }
 
         }
@@ -38,13 +38,13 @@ namespace HMS.Controllers
         {
 
             var order = await _orderServices.UpdateOrder(request.CustomerId, request);
-            if (order.Success == true)
+            if (order.Success == false)
             {
                 return Ok(order);
             }
             else
             {
-                return BadRequest(order.Success == false);
+                return BadRequest(order);
             }
         }
 
@@ -52,24 +52,24 @@ namespace HMS.Controllers
         public async Task<IActionResult> DeleteRoomAsync([FromRoute] int id)
         {
             var order = await _orderServices.DeleteOrderAsync(id);
-            if (order.Success == true)
+            if (order.Success == false)
             {
                 return Ok(order);
             }
-            return BadRequest(order.Success == false);
+            return BadRequest(order);
 
         }
         [HttpGet("get-all-order-created")]
         public async Task<IActionResult> GetAllOrderAsync()
         {
             var order = await _orderServices.GetAllOrderAsync();
-            if (order.Success == true)
+            if (order.Success == false)
             {
                 return Ok(order);
             }
             else
             {
-                return BadRequest(order.Success == false);
+                return BadRequest(order);
             }
 
 
@@ -80,13 +80,13 @@ namespace HMS.Controllers
         {
 
             var order = await _orderServices.GetOrderByIdAsync(id);
-            if (order.Success == true)
+            if (order.Success == false)
             {
                 return Ok(order);
             }
             else
             {
-                return BadRequest(order.Success == false);
+                return BadRequest(order);
             }
 
         }
