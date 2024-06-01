@@ -12,6 +12,8 @@ namespace HMS.Dto.RequestModel
         public int MaxOccupancy { get; set; }
         public decimal RoomRate { get; set; }
         public RoomStatus RoomStatus { get; set; }
+        public SelectAmenity Name { get; set; }
+
         public bool Availability { get; set; }
 
 

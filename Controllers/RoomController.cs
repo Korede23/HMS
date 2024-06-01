@@ -1,6 +1,8 @@
 ﻿using HMS.Dto.RequestModel;
 using HMS.Implementation.Interface;
+using HMS.Implementation.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HMS.Controllers
 {
@@ -13,10 +15,15 @@ namespace HMS.Controllers
         public RoomController(IRoomService roomService)
         {
             _roomService = roomService;
+
         }
+
+
         [HttpPost("create-room")]
         public async Task<IActionResult> CreateRoom(CreateRoom request)
         {
+
+
             var room = await _roomService.CreateRoom(request);
             if (room.Success == false)
             {
@@ -26,8 +33,8 @@ namespace HMS.Controllers
             {
                 return BadRequest(room);
             }
-
         }
+
 
         [HttpPost("edit-room")]
         public async Task<IActionResult> EditRoom([FromBody] UpdateRoom request)

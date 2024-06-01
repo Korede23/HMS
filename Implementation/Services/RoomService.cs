@@ -64,8 +64,8 @@ namespace HMS.Implementation.Services
                 Message = $"Room {request.RoomName} Created Successfully"
 
             };
-            
-            
+
+
 
         }
 
@@ -157,7 +157,7 @@ namespace HMS.Implementation.Services
                 {
                     Success = true,
                     Message = $"Room {Id} Retrieved succesfully",
-                   
+
 
                 };
             }
@@ -208,6 +208,26 @@ namespace HMS.Implementation.Services
                 Hasherror = true
             };
         }
+
+
+
+        public async Task<List<SelectAmenity>> GetAmenity()
+        {
+            var amenities = await _dbContext.RoomAmenities.ToListAsync();
+            var result = new List<SelectAmenity>();
+            if (amenities.Count > 0)
+            {
+
+                result = amenities.Select(x => new SelectAmenity
+                {
+                    Id = x.AmenityId,
+                   // Name = x.Amenity,
+                }).ToList();
+
+            }
+            return result;
+        }
+
 
     }
 }

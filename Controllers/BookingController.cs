@@ -29,6 +29,15 @@ namespace HMS.Controllers
             }
         }
 
+
+        //[HttpGet("create-booking")]
+        //public async Task<IActionResult> GetAllBoking()
+        //{
+        //    var booking = await _bookService.GetAllBookingsAsync();
+        //    return View(booking.Data);
+        //}
+
+
         [HttpPost("edit-Booking")]
         public async Task<IActionResult> EditBooking([FromBody] UpdateBooking request)
         {
