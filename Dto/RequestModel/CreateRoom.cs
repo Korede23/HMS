@@ -4,7 +4,7 @@ namespace HMS.Dto.RequestModel
 {
     public class CreateRoom
     {
-        // public int Id { get; set; }
+         public int Id { get; set; }
         public RoomName RoomName { get; set; }
         public int RoomNumber { get; set; }
         public RoomType RoomType { get; set; }

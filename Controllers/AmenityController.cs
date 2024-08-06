@@ -1,5 +1,6 @@
 ﻿using HMS.Dto.RequestModel;
 using HMS.Implementation.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace HMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AmenityController : ControllerBase
     {
         private readonly IAmenityService _amenityService;
@@ -77,7 +79,7 @@ namespace HMS.Controllers
         [HttpGet("get-amenity-by-id/{id}")]
         public async Task<IActionResult> GetAmenityById(int id)
         {
-            var amenity = await _amenityService.GetAmenityBYId(id);
+            var amenity = await _amenityService.GetAmenityById(id);
             if (amenity.Success == false)
             {
                 return Ok(amenity);

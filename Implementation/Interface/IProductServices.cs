@@ -6,10 +6,10 @@ namespace HMS.Implementation.Interface
 {
     public interface IProductServices
     {
-        Task<BaseResponse> CreateProduct(CreateProduct request);
-        Task<BaseResponse> DeleteProductAsync(int Id);
-        Task<ProductResponseDto> GetAllProductAsync();
-        Task<ProductResponseDto> GetAllProductsByIdAsync(int Id);
-        Task<BaseResponse> UpdateProduct(int Id, UpdateProduct request);
+        Task<BaseResponse<Guid>> CreateProduct(CreateProduct request);
+        Task<BaseResponse<Guid>> DeleteProductAsync(int Id);
+        Task<BaseResponse<ProductDto>> GetAllProductsByIdAsync(int Id);
+        Task<BaseResponse<IList<ProductDto>>> GetAllProductAsync();
+        Task<BaseResponse<ProductDto>> UpdateProduct(int id, UpdateProduct request);
     }
 }

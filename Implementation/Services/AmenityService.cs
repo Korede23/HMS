@@ -16,83 +16,123 @@ namespace HMS.Implementation.Services
             _dbContext = dbContext;
         }
 
-        public async Task<BaseResponse> CreateAmenity(CreateAmenityRequestModel request)
+        public async Task<BaseResponse<Guid>> CreateAmenity(CreateAmenityRequestModel request)
         {
-            if (request != null)
+            try
             {
-                var roomAmenity = new Amenity
+                if (request != null)
                 {
-                    AmenityName = request.AmenityName,
-                    AmenityType = request.AmenityType,
+                    var roomAmenity = new Amenity
+                    {
+                        AmenityName = request.AmenityName,
+                    };
+                    _dbContext.Amenities.Add(roomAmenity);
+                }
+                if (await _dbContext.SaveChangesAsync() > 0)
+                {
+                    return new BaseResponse<Guid>
+                    {
+                        Success = true,
+                        Message = "Successful"
+                    };
+                }
+                else
+                {
+                    return new BaseResponse<Guid>
+                    {
+                        Success = false,
+                        Message = "Failed"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new BaseResponse<Guid>
+                {
+                    Success = false,
+                    Message = "Failed"
                 };
-                _dbContext.Amenities.Add(roomAmenity);
+
             }
 
-            if (await _dbContext.SaveChangesAsync() > 0)
+
+        }
+
+
+        public async Task<BaseResponse<Guid>> DeleteAmenity(int Id)
+        {
+            try
             {
-                return new BaseResponse
+                var amenity = await _dbContext.Amenities.FirstOrDefaultAsync();
+                if (amenity != null)
                 {
-                    Success = true,
-                    Message = "Successful"
-                };
+                    _dbContext.Amenities.Remove(amenity);
+                }
+                if (await _dbContext.SaveChangesAsync() > 0)
+                {
+                    return new BaseResponse<Guid>
+                    {
+                        Success = true,
+                        Message = "Amenity Deleted Successful"
+                    };
+                }
+                else
+                {
+                    return new BaseResponse<Guid>
+                    {
+                        Success = false,
+                        Message = "Failed"
+                    };
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return new BaseResponse
+                return new BaseResponse<Guid>
                 {
                     Success = false,
                     Message = "Failed"
                 };
             }
+
+
         }
 
 
-        public async Task<BaseResponse> DeleteAmenity(int Id)
+        public async Task<BaseResponse<AmenityDto>> GetAmenityById(int Id)
         {
-            var amenity = await _dbContext.Amenities.FirstOrDefaultAsync(x => x.Id == Id);
-            if (amenity != null)
-            {
-                _dbContext.Amenities.Remove(amenity);
-            }
-            if (await _dbContext.SaveChangesAsync() > 0)
-            {
-                return new BaseResponse
-                {
-                    Success = true,
-                    Message = "Amenity Deleted Successful"
-                };
-            }
-            else
-            {
-                return new BaseResponse
-                {
-                    Success = false,
-                    Message = "Failed"
-                };
-            }
-        }
 
-        public async Task<AmenityResponseDto> GetAmenityBYId(int Id)
-        {
-            var amenity = await _dbContext.Amenities
-            .Where(x => x.Id == Id)
-            .Select(x => new AmenityDto
+            try
             {
-                AmenityName = x.AmenityName,
-                AmenityType = x.AmenityType,
+                var amenity = await _dbContext.Amenities
+                            .Where(x => x.Id == Id)
+                            .Select(x => new AmenityDto
+                            {
+                                AmenityName = x.AmenityName,
 
-            }).ToListAsync();
-            if (amenity != null)
-            {
-                return new AmenityResponseDto
+                            }).FirstOrDefaultAsync();
+                if (amenity != null)
                 {
-                    Success = true,
-                    Message = "Successful"
-                };
+                    return new BaseResponse<AmenityDto>
+                    {
+                        Success = true,
+                        Message = "Successful",
+                        Data = amenity
+                    };
+                }
+                else
+                {
+                    return new BaseResponse<AmenityDto>
+                    {
+                        Success = false,
+                        Message = "Successful"
+                    };
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return new AmenityResponseDto
+
+                return new BaseResponse<AmenityDto>
                 {
                     Success = false,
                     Message = "Successful"
@@ -102,59 +142,94 @@ namespace HMS.Implementation.Services
 
 
         }
-
-        public async Task<AmenityResponseDto> GetAllAmenity()
+        public async Task<BaseResponse<IList<AmenityDto>>> GetAllAmenity()
         {
-            var amenity = await _dbContext.Amenities
-            .Select(x => new AmenityDto
+            try
             {
-                AmenityName = x.AmenityName,
-                AmenityType = x.AmenityType,
+                var amenity = await _dbContext.Amenities
+                           .Select(x => new AmenityDto
+                           {
+                               AmenityName = x.AmenityName,
 
-            }).ToListAsync();
-            if (amenity != null)
-            {
-                return new AmenityResponseDto
+                           }).ToListAsync();
+                if (amenity != null)
                 {
-                    Success = true,
-                    Message = "Successful"
-                };
+                    return new BaseResponse<IList<AmenityDto>>
+                    {
+                        Success = true,
+                        Message = "Successful"
+                    };
+                }
+                else
+                {
+                    return new BaseResponse<IList<AmenityDto>>
+                    {
+                        Success = false,
+                        Message = "Successful"
+                    };
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return new AmenityResponseDto
+                return new BaseResponse<IList<AmenityDto>>
                 {
                     Success = false,
                     Message = "Successful"
                 };
             }
+
+
         }
 
-        public async Task<BaseResponse> UpdateAmenity (int Id , UpdateAmenity request)
+        public async Task<BaseResponse<AmenityDto>> UpdateAmenity(int Id, UpdateAmenity request)
         {
-            var amenity = await _dbContext.Amenities.FirstOrDefaultAsync(x => x.Id == Id);
-            if (amenity != null)
+
+            try
             {
+                var amenity = await _dbContext.Amenities.FirstOrDefaultAsync(x => x.Id == Id);
+                if (amenity == null)
+                {
+                    return new BaseResponse<AmenityDto>
+                    {
+                        Success = false,
+                        Message = "Update Failed"
+                    };
+                }
+
                 amenity.AmenityName = request.AmenityName;
-                amenity.AmenityType = request.AmenityType;
-            }
-            _dbContext.Amenities.Add(amenity);
-            if (await _dbContext.SaveChangesAsync() > 0)
-            {
-                return new BaseResponse
+                _dbContext.Amenities.Update(amenity);
+                if (await _dbContext.SaveChangesAsync() > 0)
                 {
-                    Success = true,
-                    Message = "Updated Successful"
-                };
+                    return new BaseResponse<AmenityDto>
+                    {
+                        Success = true,
+                        Message = "Updated Successful",
+                        Data = new AmenityDto
+                        {
+                            AmenityName = request.AmenityName,
+                        }
+
+                    };
+                }
+                else
+                {
+                    return new BaseResponse<AmenityDto>
+                    {
+                        Success = false,
+                        Message = "Update Failed"
+                    };
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return new BaseResponse
+                return new BaseResponse<AmenityDto>
                 {
                     Success = false,
                     Message = "Update Failed"
                 };
             }
+
+
         }
     }
 }

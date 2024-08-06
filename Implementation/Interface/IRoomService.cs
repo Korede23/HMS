@@ -7,11 +7,11 @@ namespace HMS.Implementation.Interface
 {
     public interface IRoomService
     {
-         Task<BaseResponse> CreateRoom(CreateRoom request);
-        Task<BaseResponse> DeleteRoomAsync(int Id);
-        Task<BaseResponse> UpdateRoom(int Id, UpdateRoom request);
-        Task<RoomResponseDto> GetRoomsByIdAsync(int Id);
-        Task<RoomResponseDto> GetAllRoomsCreatedAsync();
+        Task<BaseResponse<Guid>> CreateRoom(CreateRoom request);
+        Task<BaseResponse<Guid>> DeleteRoomAsync(int Id);
+        Task<BaseResponse<IList<RoomDto>>> GetAllRoomsCreatedAsync();
+        Task<BaseResponse<RoomDto>> GetRoomsByIdAsync(int Id);
+        Task<BaseResponse<RoomDto>> UpdateRoom(int Id, UpdateRoom request);
         Task<List<SelectAmenity>> GetAmenity();
 
 

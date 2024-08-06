@@ -17,30 +17,42 @@ namespace HMS.Implementation.Services
         }
 
 
-        public async Task<BaseResponse> CreateProduct(CreateProduct request)
+        public async Task<BaseResponse<Guid>> CreateProduct(CreateProduct request)
         {
-            if (request != null)
+            try
             {
-                var items = new Product
+                if (request != null)
                 {
-                    Name = request.Name,
-                    Items = request.Items,
-                    Price = request.Price,
-                };
-                _dbContext.Products.Add(items);
-            }
+                    var items = new Product
+                    {
+                        Name = request.Name,
+                        Price = request.Price
+                    };
+                    _dbContext.Products.Add(items);
+                }
 
-            if (await _dbContext.SaveChangesAsync() > 0)
-            {
-                return new BaseResponse
+                if (await _dbContext.SaveChangesAsync() > 0)
                 {
-                    Success = true,
-                    Message = "Product Created Succesfully"
-                };
+                    return new BaseResponse<Guid>
+                    {
+                        Success = true,
+                        Message = "Product Created Successfully",
+
+                    };
+                }
+                else
+                {
+                    return new BaseResponse<Guid>
+                    {
+                        Success = false,
+                        Message = "Fail To Create Product",
+                        Hasherror = true
+                    };
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return new BaseResponse
+                return new BaseResponse<Guid>
                 {
                     Success = false,
                     Message = "Fail To Create Product",
@@ -51,47 +63,61 @@ namespace HMS.Implementation.Services
 
         }
 
-        public async Task<BaseResponse> DeleteProductAsync(int Id)
-        {
-            var item = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == Id);
 
-            if (item != null)
+
+        public async Task<BaseResponse<Guid>> DeleteProductAsync(int Id)
+        {
+            try
             {
-                _dbContext.Products.Remove(item);
-            }
-            if (await _dbContext.SaveChangesAsync() > 0)
-            {
-                return new BaseResponse
+                var item = await _dbContext.Products.FirstOrDefaultAsync();
+
+                if (item != null)
                 {
-                    Success = true,
-                    Message = "Product has been deleted Succesfully"
-                };
+                    _dbContext.Products.Remove(item);
+                }
+                if (await _dbContext.SaveChangesAsync() > 0)
+                {
+                    return new BaseResponse<Guid>
+                    {
+                        Success = true,
+                        Message = "Product has been deleted Succesfully"
+                    };
+                }
+                else
+                {
+                    return new BaseResponse<Guid>
+                    {
+                        Success = false,
+                        Message = "Failed to delete This Product",
+                        Hasherror = true
+                    };
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return new BaseResponse
+                return new BaseResponse<Guid>
                 {
                     Success = false,
                     Message = "Failed to delete This Product",
                     Hasherror = true
                 };
             }
+
         }
 
-        public async Task<ProductResponseDto> GetAllProductsByIdAsync(int Id)
+        public async Task<BaseResponse<ProductDto>> GetAllProductsByIdAsync(int Id)
         {
 
             var item = await _dbContext.Products
                 .Where(x => x.Id == Id)
                 .Select(x => new ProductDto
                 {
-                    Items = x.Items,
                     Name = x.Name,
                     Price = x.Price,
-                }).ToListAsync();
+                }).FirstOrDefaultAsync();
             if (item != null)
             {
-                return new ProductResponseDto
+                return new BaseResponse<ProductDto>
                 {
                     Success = true,
                     Message = "Products Retrieved Succesfully",
@@ -100,7 +126,7 @@ namespace HMS.Implementation.Services
             }
             else
             {
-                return new ProductResponseDto
+                return new BaseResponse<ProductDto>
                 {
                     Success = false,
                     Message = "Retrieved Failed",
@@ -110,19 +136,20 @@ namespace HMS.Implementation.Services
 
         }
 
-        public async Task<ProductResponseDto> GetAllProductAsync()
+
+       
+        public async Task<BaseResponse<IList<ProductDto>>> GetAllProductAsync()
         {
 
             var item = await _dbContext.Products
                 .Select(x => new ProductDto
                 {
-                    Items = x.Items,
                     Name = x.Name,
                     Price = x.Price,
                 }).ToListAsync();
             if (item != null)
             {
-                return new ProductResponseDto
+                return new BaseResponse<IList<ProductDto>>
                 {
                     Success = true,
                     Message = "Products Retrieved Succesfully",
@@ -131,7 +158,7 @@ namespace HMS.Implementation.Services
             }
             else
             {
-                return new ProductResponseDto
+                return new BaseResponse<IList<ProductDto>>
                 {
                     Success = false,
                     Message = "Retrieved Failed",
@@ -140,36 +167,53 @@ namespace HMS.Implementation.Services
             }
         }
 
-
-        public async Task<BaseResponse> UpdateProduct(int Id , UpdateProduct request)
+        public async Task<BaseResponse<ProductDto>> UpdateProduct(int id, UpdateProduct request)
         {
-            var item = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == Id);
-            if (item != null)
+            try
             {
-                item.Id = request.Id;
+                var item = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+                if (item == null)
+                {
+                    return new BaseResponse<ProductDto>
+                    {
+                        Success = false,
+                        Message = "Product not found.",
+                        Hasherror = true
+                    };
+                }
+
                 item.Name = request.Name;
                 item.Price = request.Price;
-                item.Items = request.Items;
-            }
-            _dbContext.Products.Add(item);
 
-            if (await _dbContext.SaveChangesAsync() > 0)
-            {
-                return new BaseResponse
+                _dbContext.Products.Update(item);
+                if (await _dbContext.SaveChangesAsync() > 0)
                 {
-                    Success = true,
-                    Message = $"Product with ID {Id} Updated successfully."
-                };
+                    return new BaseResponse<ProductDto>
+                    {
+                        Success = true,
+                        Message = $"Product with ID {id} updated successfully."
+                    };
+                }
+                else
+                {
+                    return new BaseResponse<ProductDto>
+                    {
+                        Success = false,
+                        Message = "Failed to update product.",
+                        Hasherror = true
+                    };
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return new BaseResponse
+                return new BaseResponse<ProductDto>
                 {
                     Success = false,
-                    Message = "Failed to Update Product ,there was an error in the updating process.",
+                    Message = "An error occurred while updating the product.",
                     Hasherror = true
                 };
             }
         }
+
     }
 }

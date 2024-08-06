@@ -15,9 +15,5 @@ namespace HMS.Dto.BookingDto
 
     }
 
-    public class BookingResponseDto : BaseResponse
-    {
-        public List<BookingDto> Data { get; set; }
-
-    }
+    
 }

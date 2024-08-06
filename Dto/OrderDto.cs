@@ -12,8 +12,5 @@ namespace HMS.Dto
         public DateTime OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
     }
-    public class OrderResponseDto : BaseResponse
-    {
-        public List<OrderDto> Data { get; set; }
-    }
 }
+    

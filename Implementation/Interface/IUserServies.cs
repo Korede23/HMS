@@ -6,14 +6,12 @@ namespace HMS.Implementation.Interface
 {
     public interface IUserServices
     {
-        Task<UserResponseDto> GetUserByIdAsync(int Id);
-       // List<UserDto> GetUserById(int Id);
-        Task<BaseResponse> CreateUser(CreateUser request);
-       // bool DeleteUser(int id);
-        Task<BaseResponse> DeleteUserAsync(int id);
-        Task<UserResponseDto> GetAllUserAsync();
-        Task<BaseResponse> UpdateUser(int Id, UpdateUser request);
-       // void UpdateUser(int Id, UpdateUser request);
+        Task<BaseResponse<Guid>> CreateUser(CreateUser request);
+        Task<BaseResponse<Guid>> DeleteUserAsync(string id);
+        Task<BaseResponse<UserDto>> GetUserByIdAsync(string Id);
+        Task<BaseResponse<IList<UserDto>>> GetAllUserAsync();
+        Task<BaseResponse<UserDto>> UpdateUser(string Id, UpdateUser request);
+        Task<UserDto> GetUserByUserNAmeAsync(string username, string password);
 
     }
 }

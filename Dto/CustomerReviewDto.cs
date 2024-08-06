@@ -10,8 +10,4 @@ namespace HMS.Dto
         public string Comment { get; set; }
         public Review Rating { get; set; }
     }
-    public class ReviewResponseDto : BaseResponse
-    {
-        public List<CustomerReviewDto> Data { get; set; }
-    }
 }

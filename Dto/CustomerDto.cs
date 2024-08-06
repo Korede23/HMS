@@ -16,8 +16,5 @@ namespace HMS.Dto
         public Gender Gender { get; set; }
 
     }
-    public class CustomerResponseDto : BaseResponse
-    {
-        public List<CustomerDto> Data { get; set; }
-    }
+    
 }

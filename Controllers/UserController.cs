@@ -1,11 +1,13 @@
 ﻿using HMS.Dto.RequestModel;
 using HMS.Implementation.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserServices _userServices;
@@ -41,7 +43,7 @@ namespace HMS.Controllers
 
 
         [HttpDelete("delete-user/{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
             var user = await _userServices.DeleteUserAsync(id);
             if (user.Success == false)
@@ -67,7 +69,7 @@ namespace HMS.Controllers
 
 
         [HttpGet("get-user-by-id/{id}")]
-        public async Task<IActionResult> GetUserByIdAsync(int id)
+        public async Task<IActionResult> GetUserByIdAsync(string id)
         {
             var user = await _userServices.GetUserByIdAsync(id);
             if (user.Success == false)

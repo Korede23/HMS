@@ -1,6 +1,7 @@
 ﻿using HMS.Dto.RequestModel;
 using HMS.Implementation.Interface;
 using HMS.Implementation.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -8,6 +9,7 @@ namespace HMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RoomController : Controller
     {
         private readonly IRoomService _roomService;
@@ -22,8 +24,6 @@ namespace HMS.Controllers
         [HttpPost("create-room")]
         public async Task<IActionResult> CreateRoom(CreateRoom request)
         {
-
-
             var room = await _roomService.CreateRoom(request);
             if (room.Success == false)
             {

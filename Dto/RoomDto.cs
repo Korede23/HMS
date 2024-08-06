@@ -17,8 +17,5 @@ namespace HMS.Dto.ResponseModel
 
     }
 
-    public class RoomResponseDto : BaseResponse
-    {
-        public List<RoomDto> Data { get; set; }
-    }
+    
 }

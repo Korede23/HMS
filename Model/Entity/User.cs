@@ -1,10 +1,8 @@
-﻿
-
-using HMS.Model.Entity.Enum;
-
+﻿using HMS.Model.Entity.Enum;
+using Microsoft.AspNetCore.Identity;
 namespace HMS.Model.Entity
 {
-    public class User : BaseEntity
+    public class User : IdentityUser
     {
         public string? Name { get; set; }
         public string? Address { get; set; }
@@ -14,5 +12,7 @@ namespace HMS.Model.Entity
         public int Age { get; set; }
         public string? Password { get; set; }
         public Gender Gender { get; set; }
+        public DateTime CreatedTime { get; set; }
+
     }
 }

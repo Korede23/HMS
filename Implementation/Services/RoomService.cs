@@ -17,7 +17,7 @@ namespace HMS.Implementation.Services
 
             _dbContext = dbContext;
         }
-        public async Task<BaseResponse> CreateRoom(CreateRoom request)
+        public async Task<BaseResponse<Guid>> CreateRoom(CreateRoom request)
         {
 
 
@@ -25,15 +25,12 @@ namespace HMS.Implementation.Services
             {
                 // Check if the room already exists
                 var existingRoom = _dbContext.Rooms.FirstOrDefault(x =>
-                    x.RoomName == request.RoomName &&
-                    x.RoomNumber == request.RoomNumber &&
-                    x.RoomType == request.RoomType &&
-                    x.RoomStatus == request.RoomStatus);
+                    x.Id == request.Id);
 
                 if (existingRoom != null)
                 {
                     // Room already exists
-                    return new BaseResponse
+                    return new BaseResponse<Guid>
                     {
                         Success = true,
                         Message = $"Room {request.RoomName} already exists.",
@@ -58,7 +55,7 @@ namespace HMS.Implementation.Services
                 await _dbContext.Rooms.AddAsync(room);
                 _dbContext.SaveChanges();
             }
-            return new BaseResponse
+            return new BaseResponse<Guid>
             {
                 Success = true,
                 Message = $"Room {request.RoomName} Created Successfully"
@@ -70,7 +67,7 @@ namespace HMS.Implementation.Services
         }
 
 
-        public async Task<BaseResponse> DeleteRoomAsync(int Id)
+        public async Task<BaseResponse<Guid>> DeleteRoomAsync(int Id)
         {
             var room = await _dbContext.Rooms.FirstOrDefaultAsync();
             if (room != null)
@@ -79,25 +76,25 @@ namespace HMS.Implementation.Services
             }
             if (await _dbContext.SaveChangesAsync() > 0)
             {
-                return new BaseResponse
+                return new BaseResponse<Guid>
                 {
                     Success = true,
                     Message = $"Room  Number {Id} has been deleted succesfully "
                 };
             }
-            return new BaseResponse
+            return new BaseResponse<Guid>
             {
                 Success = false,
                 Message = $"Failed to delete room with {Id}.The room may not exist or there was an error in the deletion process."
             };
         }
 
-        public async Task<RoomResponseDto> GetAllRoomsCreatedAsync()
+        public async Task<BaseResponse<IList<RoomDto>>> GetAllRoomsCreatedAsync()
         {
             var rooms = await _dbContext.Rooms
              .Select(x => new RoomDto()
              {
-                 Id = x.Id,
+                 Id = x.Id, 
                  RoomName = x.RoomName,
                  RoomNumber = x.RoomNumber,
                  Availability = x.Availability,
@@ -110,7 +107,7 @@ namespace HMS.Implementation.Services
 
             if (rooms != null)
             {
-                return new RoomResponseDto
+                return new BaseResponse<IList<RoomDto>>
                 {
                     Success = true,
                     Message = "Rooms Succesfully Retrieved",
@@ -119,7 +116,7 @@ namespace HMS.Implementation.Services
             }
             else
             {
-                return new RoomResponseDto
+                return new BaseResponse<IList<RoomDto>>
                 {
                     Success = false,
                     Message = "Rooms Retrieval failed",
@@ -134,7 +131,7 @@ namespace HMS.Implementation.Services
 
 
 
-        public async Task<RoomResponseDto> GetRoomsByIdAsync(int Id)
+        public async Task<BaseResponse<RoomDto>> GetRoomsByIdAsync(int Id)
         {
 
             var rooms = await _dbContext.Rooms
@@ -153,20 +150,20 @@ namespace HMS.Implementation.Services
              }).ToListAsync();
             if (rooms != null)
             {
-                return new RoomResponseDto
+                return new BaseResponse<RoomDto>
                 {
                     Success = true,
-                    Message = $"Room {Id} Retrieved succesfully",
+                    Message = "Room  Retrieved succesfully",
 
 
                 };
             }
             else
             {
-                return new RoomResponseDto
+                return new BaseResponse<RoomDto>
                 {
                     Success = false,
-                    Message = $"Room {Id} Retrieval Failed"
+                    Message = "Room  Retrieval Failed"
                 };
             }
 
@@ -174,34 +171,38 @@ namespace HMS.Implementation.Services
 
 
 
-        public async Task<BaseResponse> UpdateRoom(int Id, UpdateRoom request)
+        public async Task<BaseResponse<RoomDto>> UpdateRoom(int Id, UpdateRoom request)
         {
             var room = _dbContext.Rooms.FirstOrDefault(x => x.Id == Id);
             if (room == null)
             {
-                room.RoomNumber = request.RoomNumber;
-                room.RoomName = request.RoomName;
-                room.RoomRate = request.RoomRate;
-                room.RoomStatus = request.RoomStatus;
-                room.BedType = request.BedType;
-                room.RoomType = request.RoomType;
-                room.MaxOccupancy = request.MaxOccupancy;
-                room.RoomStatus = request.RoomStatus;
-                room.Id = request.Id;
-
-
+                return new BaseResponse<RoomDto>
+                {
+                    Success = false,
+                    Message = $"Room {request.Id} Update failed",
+                    Hasherror = true
+                };
             }
+            room.RoomNumber = request.RoomNumber;
+            room.RoomName = request.RoomName;
+            room.RoomRate = request.RoomRate;
+            room.RoomStatus = request.RoomStatus;
+            room.BedType = request.BedType;
+            room.RoomType = request.RoomType;
+            room.MaxOccupancy = request.MaxOccupancy;
+            room.RoomStatus = request.RoomStatus;
+            room.Id = request.Id;
             _dbContext.Rooms.Update(room);
             if (await _dbContext.SaveChangesAsync() > 0)
             {
-                return new BaseResponse
+                return new BaseResponse<RoomDto>
                 {
                     Success = true,
                     Message = $"Room {request.Id} Updated Succesfully"
                 };
 
             }
-            return new BaseResponse
+            return new BaseResponse<RoomDto>
             {
                 Success = false,
                 Message = $"Room {request.Id} Update failed",
@@ -213,22 +214,18 @@ namespace HMS.Implementation.Services
 
         public async Task<List<SelectAmenity>> GetAmenity()
         {
-            var amenities = await _dbContext.RoomAmenities.ToListAsync();
+            var amenities = await _dbContext.Amenities.ToListAsync();
             var result = new List<SelectAmenity>();
             if (amenities.Count > 0)
             {
-
                 result = amenities.Select(x => new SelectAmenity
                 {
-                    Id = x.AmenityId,
-                   // Name = x.Amenity,
+                    Id = x.Id,
+                    AmenityName = x.AmenityName
                 }).ToList();
-
             }
             return result;
         }
-
-
     }
 }
 
